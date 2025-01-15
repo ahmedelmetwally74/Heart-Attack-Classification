@@ -8,7 +8,7 @@ from dash_iconify import DashIconify
 from app import server
 
 # Connect to your app pages
-from pages import Homepage, page2 #, page3, page4
+from pages import Homepage, page2 , page3 #, page4
 
 heart_attack_icon = html.Img(src=app.get_asset_url('heart-attack.png'),
                       style={'height': '34px', 'margin-right': 10,'margin-bottom':8})
@@ -24,7 +24,7 @@ app.layout = html.Div([
         [
             dbc.NavItem(dbc.NavLink([home_icon],style={"font-weight":"bold"}, href="/pages/homepage")),
             dbc.NavItem(dbc.NavLink([world_icon], style={"font-weight":"bold"},href="/pages/page2")),
-            # dbc.NavItem(dbc.NavLink([factors_icon],style={"font-weight":"bold"}, href="/pages/page3")),
+            dbc.NavItem(dbc.NavLink([factors_icon],style={"font-weight":"bold"}, href="/pages/page3")),
             # dbc.NavItem(dbc.NavLink([surveys_icon], style={"font-weight":"bold"},href="/pages/page4"))
         ],
     brand=html.Div([heart_attack_icon,"Heart Attack Analytics"],style={"font-weight":"bold","color":"#fbfffc",'font-size':30}),
@@ -45,8 +45,8 @@ def display_page(pathname):
         return Homepage.layout
     if pathname == '/pages/page2':
         return page2.layout
-    # if pathname == '/pages/page3':
-    #     return page3.layout
+    if pathname == '/pages/page3':
+        return page3.layout
     # if pathname == '/pages/page4':
     #     return page4.layout
     else:

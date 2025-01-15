@@ -222,12 +222,7 @@ def show_text(n_clicks):
     else:
         return None
 
-# @app.callback(
-#     Output(component_id="bar_plot",component_property="figure"),
-#     State(component_id="year_slider",component_property="value"),
-#     State(component_id="entity_dropdown",component_property="value"),
-#     Input(component_id="submit_button",component_property="n_clicks")
-# )
+
 @app.callback(
     Output("bar_plot", "figure"),
     Input("year_slider", "value"),
