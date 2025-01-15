@@ -32,7 +32,21 @@ questions = [
     "What is the number of major vessels colored by fluoroscopy? (Enter a number from 0 to 3)",
     "Are there any blood flow problems? (0: Normal, 1: Fixed defect, 2: Reversible defect)"
 ]
-
+column_info = {
+    "age": "Age of the individual (5–95 years).",
+    "sex": "Gender of the individual (Male or Female).",
+    "cp": "Chest Pain Type: 0 = Typical Angina, 1 = Atypical Angina, 2 = Non-anginal pain, 3 = Asymptomatic.",
+    "trestbps": "Resting blood pressure (in mm Hg, typically 50–200).",
+    "chol": "Serum Cholesterol: Cholesterol level in mg/dl (100–600).",
+    "fbs": "Fasting blood sugar > 120 mg/dl (1 = Yes, 0 = No).",
+    "restecg": "Resting Electrocardiographic Results: 0 = Normal, 1 = ST-T Wave Abnormality, 2 = Left Ventricular Hypertrophy.",
+    "thalach": "Maximum heart rate achieved during exercise (60–220 bpm).",
+    "exang": "Exercise-Induced Angina (Yes or No).",
+    "oldpeak": "ST depression induced by exercise relative to rest (0.0–5.0).",
+    "slope": "Slope of the ST segment during peak exercise: 0 = Upsloping, 1 = Flat, 2 = Downsloping.",
+    "ca": "Number of major vessels colored by fluoroscopy (0–3).",
+    "thal": "Thalassemia: 0 = Normal, 1 = Fixed defect, 2 = Reversible defect."
+}
 # Mapping questions to keys
 question_keys = [
     "age",
@@ -156,9 +170,48 @@ def chatbot_interaction(send_clicks, user_input, current_responses):
             return first_question, "", ""
 
     if user_input:
-        # Store the user response using mapped keys
+        
         question_index = len(user_responses)
-        user_responses[question_keys[question_index]] = user_input
+
+        current_key = question_keys[question_index]
+
+        # Define validation rules
+        validation_errors = {
+            "age": lambda x: not x.isdigit() or int(x) < 5 or int(x) > 95,
+            "sex": lambda x: x.lower() not in ["man", "male", "0", "woman", "female", "1"],
+            "cp": lambda x: x not in ["0", "1", "2", "3"],
+            "trestbps": lambda x: not x.isdigit() or int(x) < 50 or int(x) > 200,
+            "chol": lambda x: not x.isdigit() or int(x) < 100 or int(x) > 400,
+            "fbs": lambda x: not x.isdigit() or int(x) < 50 or int(x) > 400,
+            "restecg": lambda x: x not in ["0", "1", "2"],
+            "thalach": lambda x: not x.isdigit() or int(x) < 60 or int(x) > 220,
+            "exang": lambda x: x.lower() not in ["yes", "no", "0", "1"],
+            "oldpeak": lambda x: not x.replace('.', '', 1).isdigit() or float(x) < 0 or float(x) > 5,
+            "slope": lambda x: x not in ["0", "1", "2"],
+            "ca": lambda x: not x.isdigit() or int(x) < 0 or int(x) > 3,
+            "thal": lambda x: x not in ["0", "1", "2"]
+        }
+        # Adjust values based on rules
+        def adjust_value(key, value):
+            if key == "sex":
+                return "0" if value.lower() in ["man", "male", "0"] else "1"
+            elif key == "fbs":
+                return "1" if int(value) > 120 else "0"
+            elif key == "exang":
+                return "1" if value.lower() in ["yes", "1"] else "0"
+            elif key == "oldpeak":
+                return float(value)  # Ensure it's saved as float
+            else:
+                return value
+
+        # Validate input
+        if validation_errors[current_key](user_input):
+            error_message = f"Invalid input for {current_key}. Please try again."
+            chatbot_message = f"{questions[question_index]} (Hint: {column_info[current_key]})"
+            return chatbot_message, "", f"{current_responses}\n{error_message}"
+
+        # Store valid response
+        user_responses[current_key] = adjust_value(current_key, user_input)
 
         # Print current state of JSON
         print(json.dumps(user_responses, indent=2))
