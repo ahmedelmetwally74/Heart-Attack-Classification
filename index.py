@@ -16,18 +16,17 @@ heart_attack_icon = html.Img(src=app.get_asset_url('heart-attack.png'),
                       style={'height': '34px', 'margin-right': 10,'margin-bottom':8})
 
 home_icon = DashIconify(icon="fa:home", style={'margin-right': 18,'font-size':25})
-world_icon = DashIconify(icon="fa6-solid:earth-americas", style={'margin-right': 18,'font-size':25})
+doctor_icon = DashIconify(icon="medical-icon:i-care-staff-area", style={'margin-right': 18, 'font-size': 25})
 factors_icon = DashIconify(icon="fa6-solid:money-bill-trend-up", style={'margin-right': 18,'font-size':25})
-surveys_icon = DashIconify(icon="fa6-solid:clipboard-list", style={'margin-right': 18,'font-size':25})
+
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     dbc.NavbarSimple(
         [
             dbc.NavItem(dbc.NavLink([home_icon],style={"font-weight":"bold"}, href="/pages/homepage")),
-            dbc.NavItem(dbc.NavLink([world_icon], style={"font-weight":"bold"},href="/pages/page2")),
+            dbc.NavItem(dbc.NavLink([doctor_icon], style={"font-weight":"bold"},href="/pages/page2")),
             dbc.NavItem(dbc.NavLink([factors_icon],style={"font-weight":"bold"}, href="/pages/page3")),
-            # dbc.NavItem(dbc.NavLink([surveys_icon], style={"font-weight":"bold"},href="/pages/page4"))
         ],
     brand=html.Div([heart_attack_icon,"Heart Attack Analytics"],style={"font-weight":"bold","color":"#fbfffc",'font-size':30}),
     color='#8bc7b3',
