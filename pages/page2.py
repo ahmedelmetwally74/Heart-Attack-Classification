@@ -12,11 +12,6 @@ import os
 import requests
 
 model = joblib.load("best_model.joblib")
-# Loupe icon for visual enhancement
-loupe_icon = html.Img(
-    src=app.get_asset_url("loupe.png"),
-    style={'height': '32px', 'margin-right': 10}
-)
 
 # Define the list of questions for heart attack classification
 questions = [
@@ -66,32 +61,33 @@ question_keys = [
     "thal"
 ]
 
-# Chatbot Design
+# Chatbot Design with Improved Visuals
 chatbot_widget = html.Div(
     [
         dbc.Card(
             dbc.CardBody(
                 [
                     html.Div(
-                        "Hello! I am your AI Doctor. Let's gather some information to assess your heart health.",
+                        "🤖 Hello! I am your AI Doctor. Let's gather some information to assess your heart health.",
                         id="chatbot-greeting",
-                        style={"font-weight": "bold", "margin-bottom": "10px"}
+                        style={"font-weight": "bold", "margin-bottom": "10px", "font-size": "18px"}
                     ),
-                    html.Div(id="chatbot-question", style={"margin-bottom": "10px"}),
+                    html.Div(id="chatbot-question", style={"margin-bottom": "10px", "font-size": "16px"}),
                     dcc.Textarea(
                         id="chatbot-input",
                         placeholder="Type your response here...",
                         style={
                             'width': '100%',
                             'height': '60px',
-                            'margin-bottom': '10px'
+                            'margin-bottom': '10px',
+                            'font-size': '16px'
                         }
                     ),
                     dbc.Button(
-                        "Submit",
+                        "💬 Submit",
                         id="send-chatbot-message",
                         color="success",
-                        style={"width": "100%"}
+                        style={"width": "100%", "font-size": "16px"}
                     ),
                     html.Div(id="chatbot-response", style={
                         'margin-top': '20px',
@@ -100,12 +96,13 @@ chatbot_widget = html.Div(
                         'border': '1px solid #ddd',
                         'padding': '10px',
                         'border-radius': '5px',
-                        'background-color': '#f9f9f9'
+                        'background-color': '#f9f9f9',
+                        'font-size': '14px'
                     })
                 ]
             ),
             style={
-                'width': '350px',
+                'width': '400px',
                 'position': 'fixed',
                 'top': '100px',
                 'right': '20px',
@@ -134,7 +131,9 @@ layout = dbc.Container(
                 ),
                 html.Hr(),
                 html.H6(
-                    ["Explore how the AI Doctor utilizes advanced algorithms to predict and analyze the likelihood of heart-related conditions based on your unique health profile."],
+                    [
+                        "🧠 Explore how the AI Doctor utilizes advanced algorithms to predict and analyze the likelihood of heart-related conditions based on your unique health profile."
+                    ],
                     style={
                         'text-align': 'left',
                         'margin-top': '10px',
@@ -148,6 +147,8 @@ layout = dbc.Container(
         chatbot_widget
     ]
 )
+
+
 def explain_prediction(df, column_info, prediction):
     """
     Generate an explanation for the heart attack prediction using Groq API.
