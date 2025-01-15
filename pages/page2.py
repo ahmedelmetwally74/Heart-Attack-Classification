@@ -7,9 +7,9 @@ import pathlib
 from app import app
 import plotly.graph_objects as go
 import json
+import joblib
 
-
-
+model = joblib.load("best_model.joblib")
 # Loupe icon for visual enhancement
 loupe_icon = html.Img(
     src=app.get_asset_url("loupe.png"),
@@ -234,8 +234,15 @@ def chatbot_interaction(send_clicks, user_input, current_responses):
                         pass
             print(df)
             print(df.info())
+            # Predict the outcome
+            prediction = model.predict(df)[0]
+            # Define the response message
+            if prediction == 1:
+                result_message = "Our analysis predicts that you are at risk of a heart attack soon. Please consult your doctor immediately!"
+            else:
+                result_message = "Our analysis indicates that you are not at immediate risk of a heart attack. Keep up the healthy lifestyle!"
             with open('user_responses.json', 'w') as file:
                 json.dump(user_responses, file)
-            return "Thank you! Your responses have been recorded.", "", current_responses
+            return result_message, "", current_responses
 
     return dash.no_update
