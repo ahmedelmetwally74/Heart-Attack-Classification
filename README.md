@@ -30,12 +30,9 @@ The dashboard is a user-friendly, interactive web application designed to:
   - Pages dedicated to explaining the dangers of heart attacks.
   - Highlighting the factors that increase the risk of heart attacks.
 
-- **AI-Powered Tools:**
-  - **Llama Chatbot:** 
-    - Engages users with information about heart attacks.
-    - Collects reports and symptoms from users to assess the likelihood of a heart attack.
-  - **AI Doctor Chatbot:**
-    - Provides personalized advice and recommendations based on user inputs, test results, and other health metrics.
+- **AI Doctor Chatbot:**
+  - Provides personalized advice and recommendations based on user inputs, test results, and other health metrics.
+  - Collects user reports to assess the likelihood of a heart attack.
 
 - **Global Insights:**
   - Displays worldwide statistics and trends related to heart attack factors.
