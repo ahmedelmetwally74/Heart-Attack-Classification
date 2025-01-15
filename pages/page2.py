@@ -122,7 +122,7 @@ layout = dbc.Container(
         dbc.Row(
             [
                 html.H2(
-                    "Heart Attack Analytics",
+                    "AI Doctor - Heart Health Predictor",
                     className='mb-5',
                     style={
                         'color': '#144a51',
@@ -134,7 +134,7 @@ layout = dbc.Container(
                 ),
                 html.Hr(),
                 html.H6(
-                    ["Explore how geographic and demographic factors influence the prevalence of various mental health disorders."],
+                    ["Explore how the AI Doctor utilizes advanced algorithms to predict and analyze the likelihood of heart-related conditions based on your unique health profile."],
                     style={
                         'text-align': 'left',
                         'margin-top': '10px',
