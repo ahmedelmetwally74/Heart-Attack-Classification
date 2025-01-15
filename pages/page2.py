@@ -23,7 +23,7 @@ questions = [
     "What is your Chest Pain Type? (0: Typical Angina 'Most serious', 1: Atypical Angina, 2: Non-anginal pain, 3: Asymptomatic 'Least serious')",
     "What is your resting blood pressure? (in mm Hg)",
     "What is your serum cholesterol level? (in mg/dl)",
-    "What is your fasting blood sugar level? (1: Yes if greater than 120 mg/dl, 0: No)",
+    "What is your fasting blood sugar level?",
     "What is your Resting Electrocardiographic Result? (0: Normal, 1: ST-T Wave Abnormality, 2: Left Ventricular Hypertrophy)",
     "What is the maximum heart rate achieved during exercise?",
     "Do you experience Exercise-Induced Angina? (Yes or No)",
@@ -178,29 +178,29 @@ def chatbot_interaction(send_clicks, user_input, current_responses):
         # Define validation rules
         validation_errors = {
             "age": lambda x: not x.isdigit() or int(x) < 5 or int(x) > 95,
-            "sex": lambda x: x.lower() not in ["man", "male", "0", "woman", "female", "1"],
-            "cp": lambda x: x not in ["0", "1", "2", "3"],
+            "sex": lambda x: x.lower() not in ["man", "male", 0, "woman", "female", 1],
+            "cp": lambda x: x not in [0, 1, 2, 3],
             "trestbps": lambda x: not x.isdigit() or int(x) < 50 or int(x) > 200,
             "chol": lambda x: not x.isdigit() or int(x) < 100 or int(x) > 400,
             "fbs": lambda x: not x.isdigit() or int(x) < 50 or int(x) > 400,
-            "restecg": lambda x: x not in ["0", "1", "2"],
+            "restecg": lambda x: x not in [0, 1, 2],
             "thalach": lambda x: not x.isdigit() or int(x) < 60 or int(x) > 220,
-            "exang": lambda x: x.lower() not in ["yes", "no", "0", "1"],
+            "exang": lambda x: x.lower() not in ["yes", "no", 0, 1],
             "oldpeak": lambda x: not x.replace('.', '', 1).isdigit() or float(x) < 0 or float(x) > 5,
-            "slope": lambda x: x not in ["0", "1", "2"],
+            "slope": lambda x: x not in [0, 1, 2],
             "ca": lambda x: not x.isdigit() or int(x) < 0 or int(x) > 3,
-            "thal": lambda x: x not in ["0", "1", "2"]
+            "thal": lambda x: x not in [0, 1, 2]
         }
         # Adjust values based on rules
         def adjust_value(key, value):
             if key == "sex":
-                return "0" if value.lower() in ["man", "male", "0"] else "1"
+                return 1 if value.lower() in ["man", "male", 1] else 0
             elif key == "fbs":
-                return "1" if int(value) > 120 else "0"
+                return 1 if int(value) > 120 else 0
             elif key == "exang":
-                return "1" if value.lower() in ["yes", "1"] else "0"
+                return 1 if value.lower() in ["yes", "1"] else 0
             elif key == "oldpeak":
-                return float(value)  # Ensure it's saved as float
+                return float(value)  
             else:
                 return value
 
@@ -222,6 +222,9 @@ def chatbot_interaction(send_clicks, user_input, current_responses):
             return next_question, "", current_responses
         else:
             # End of questionnaire
+            df = pd.DataFrame([user_responses])
+            print(df)
+            print(df.info())
             with open('user_responses.json', 'w') as file:
                 json.dump(user_responses, file)
             return "Thank you! Your responses have been recorded.", "", current_responses
