@@ -8,6 +8,8 @@ from app import app
 import plotly.graph_objects as go
 import json
 import joblib
+import os
+import requests
 
 model = joblib.load("best_model.joblib")
 # Loupe icon for visual enhancement
@@ -215,6 +217,7 @@ user_responses = {}
     [Input("send-chatbot-message", "n_clicks")],
     [State("chatbot-input", "value"), State("chatbot-response", "children")]
 )
+
 def chatbot_interaction(send_clicks, user_input, current_responses):
     ctx = dash.callback_context
 
@@ -225,8 +228,46 @@ def chatbot_interaction(send_clicks, user_input, current_responses):
             return first_question, "", ""
 
     if user_input:
-        
         question_index = len(user_responses)
+
+        # Ensure the index is within the range of questions and keys
+        if question_index >= len(question_keys):
+            # End of questionnaire reached
+            df = pd.DataFrame([user_responses])
+
+            # Convert columns to appropriate types
+            for col in df.columns:
+                if col == "oldpeak":
+                    df[col] = df[col].astype(float)
+                else:
+                    try:
+                        df[col] = df[col].astype(float).astype(int)
+                    except ValueError:
+                        pass
+
+            print(df)
+            print(df.info())
+
+            # Predict the outcome
+            prediction = model.predict(df)[0]
+
+            # Define the response message
+            if prediction == 1:
+                result_message = (
+                    "Our analysis predicts that you are at risk of a heart attack soon. "
+                    "Please consult your doctor immediately!"
+                )
+            else:
+                result_message = (
+                    "Our analysis indicates that you are not at immediate risk of a heart attack. "
+                    "Keep up the healthy lifestyle!"
+                )
+
+            explanation = explain_prediction(df, column_info, prediction)
+            with open('user_responses.json', 'w') as file:
+                json.dump(user_responses, file)
+
+            return explanation + "\n" + result_message, "", current_responses
 
         current_key = question_keys[question_index]
 
@@ -246,6 +287,7 @@ def chatbot_interaction(send_clicks, user_input, current_responses):
             "ca": lambda x: not x.isdigit() or int(x) < 0 or int(x) > 3,
             "thal": lambda x: x not in ["0", "1", "2"]
         }
+
         # Adjust values based on rules
         def adjust_value(key, value):
             if key == "sex":
@@ -255,7 +297,7 @@ def chatbot_interaction(send_clicks, user_input, current_responses):
             elif key == "exang":
                 return "1" if value.lower() in ["yes", "1"] else "0"
             elif key == "oldpeak":
-                return float(value)  # Ensure it's saved as float
+                return float(value)
             else:
                 return value
 
@@ -275,30 +317,5 @@ def chatbot_interaction(send_clicks, user_input, current_responses):
         if question_index + 1 < len(questions):
             next_question = questions[question_index + 1]
             return next_question, "", current_responses
-        else:
-            # End of questionnaire
-            df = pd.DataFrame([user_responses])
-            # Convert all columns to integers except 'oldpeak'
-            for col in df.columns:
-                if col == "oldpeak":
-                    df[col] = df[col].astype(float)
-                else:
-                    try:
-                        df[col] = df[col].astype(float).astype(int)
-                    except ValueError:
-                        pass
-            print(df)
-            print(df.info())
-            # Predict the outcome
-            prediction = model.predict(df)[0]
-            # Define the response message
-            if prediction == 1:
-                result_message = "Our analysis predicts that you are at risk of a heart attack soon. Please consult your doctor immediately!"
-            else:
-                result_message = "Our analysis indicates that you are not at immediate risk of a heart attack. Keep up the healthy lifestyle!"
-            explanation = explain_prediction(df, column_info, prediction)
-            with open('user_responses.json', 'w') as file:
-                json.dump(user_responses, file)
-            return explanation, "", current_responses
 
     return dash.no_update
