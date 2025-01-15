@@ -273,18 +273,7 @@ def update_figure(selected_year, selected_entity, n):
      Output('popover', 'children')],
     [Input('interval-component', 'n_intervals')]
 )
-# def update_display_value(n):
-#     # Determine the index of the value to display based on the number of intervals passed
-#     live_text = ['319.9', '280M', '70 M', '40M', '24M', '15M']
-#     heart_factors = ['High Blood Pressure', 'High LDL Cholesterol', 'eating disorder', 'Smoking', 'Diabetes', 'Diabetes']
-#     index = n % len(live_text)
 
-#     # Create the contents of the card
-#     button_contents = [html.H1(children=[html.I(className="bi bi-people-fill m-2"), live_text[index]],
-#                               style={'color':'#144a51','font-weight':'bold'})]
-#     popover = dbc.PopoverBody("Estimated affected people by {} in millions".format(heart_factors[index]),style={'color': '#272727'})
-
-#     return button_contents, popover
 def update_display_value(n):
     # Determine the index of the value to display based on the number of intervals passed
     live_text = ['1.13B', '28%', '650M', '1B', '400M']
