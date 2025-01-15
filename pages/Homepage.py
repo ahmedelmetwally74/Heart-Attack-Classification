@@ -38,7 +38,7 @@ layout = dbc.Container([
         dbc.Row([
             html.H2("The Influence of Demographic and Health Factors on Heart Disease",
                     className='mb-5',
-                    style={'color': '#144a51', 'font-weight': 'bold', 'padding-top': '100px', 'text-align': 'justify'}),
+                    style={'color': '#144a51', 'font-weight': 'bold', 'padding-top': '80px', 'text-align': 'justify'}),
             dbc.Col([
             dbc.Button([download_icon, "Show Description"], outline=True, color='info',
                        id="proj_des_button",className='mb-2', size=3)],width={'size': 4}),

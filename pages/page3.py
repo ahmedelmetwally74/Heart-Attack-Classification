@@ -19,9 +19,9 @@ df = pd.read_csv(DATA_PATH.joinpath("heart_preprocessed.csv"))
 df['Heart Attack Risk'] = df['target'].map({0: 'Less chance', 1: 'More chance'})
 
 # Create the loupe icon
-loupe_icon = html.Img(
+search_icon = html.Img(
     src=app.get_asset_url("loupe.png"),
-    style={'height': '34px', 'margin-right': 10}
+    style={'height': '29px', 'margin-right': 10}
 )
 
 # Define the layout of the app
@@ -41,7 +41,7 @@ layout = dbc.Container(children=[
         ], style={'display': 'inline-flex'}),
 
         html.H6(
-            [loupe_icon, "Explore how cholesterol levels vary with age and their relationship to heart attack risk."],
+            [search_icon, "Explore how cholesterol levels vary with age and their relationship to heart attack risk."],
             style={
                 'text-align': 'left',
                 'margin-top': '10px',

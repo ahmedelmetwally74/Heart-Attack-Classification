@@ -11,6 +11,7 @@ import joblib
 import os
 import requests
 
+
 model = joblib.load("best_model.joblib")
 
 # Define the list of questions for heart attack classification
@@ -61,56 +62,62 @@ question_keys = [
     "thal"
 ]
 
-# Chatbot Design with Improved Visuals
-chatbot_widget = html.Div(
+# Chatbot Design Integrated into Main Layout
+chatbot_interface = html.Div(
     [
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.Div(
-                        "🤖 Hello! I am your AI Doctor. Let's gather some information to assess your heart health.",
-                        id="chatbot-greeting",
-                        style={"font-weight": "bold", "margin-bottom": "10px", "font-size": "18px"}
-                    ),
-                    html.Div(id="chatbot-question", style={"margin-bottom": "10px", "font-size": "16px"}),
-                    dcc.Textarea(
-                        id="chatbot-input",
-                        placeholder="Type your response here...",
-                        style={
-                            'width': '100%',
-                            'height': '60px',
-                            'margin-bottom': '10px',
-                            'font-size': '16px'
-                        }
-                    ),
-                    dbc.Button(
-                        "💬 Submit",
-                        id="send-chatbot-message",
-                        color="success",
-                        style={"width": "100%", "font-size": "16px"}
-                    ),
-                    html.Div(id="chatbot-response", style={
-                        'margin-top': '20px',
-                        'max-height': '200px',
-                        'overflow-y': 'auto',
-                        'border': '1px solid #ddd',
-                        'padding': '10px',
-                        'border-radius': '5px',
-                        'background-color': '#f9f9f9',
-                        'font-size': '14px'
-                    })
-                ]
-            ),
+        
+        html.Div(
+            "🤖 Hello! I am your AI Doctor. Let's gather some information to assess your heart health.",
+            id="chatbot-greeting",
+            style={"font-weight": "bold", "margin-bottom": "20px", "font-size": "19px", "text-align": "left"}
+        ),
+        html.Div([
+            dcc.Markdown(
+            id="chatbot-question",
+            style={"margin-bottom": "10px","margin-left": "5px" , "font-size": "15px", "text-align": "left",'white-space': 'pre-wrap'}
+ ) ]),
+        dcc.Textarea(
+            id="chatbot-input",
+            placeholder="Type your response here...",
             style={
-                'width': '400px',
-                'position': 'fixed',
-                'top': '100px',
-                'right': '20px',
-                'z-index': 1000,
-                'box-shadow': '0px 4px 6px rgba(0, 0, 0, 0.1)'
+                'width': '100%',
+                'height': '60px',
+                'margin-bottom': '0px',
+                'font-size': '15px',
+                'padding': '10px',
+                'border-radius': '5px',
+                'border': '1px solid #ccc',
             }
-        )
-    ]
+        ),
+        dbc.Button(
+            "💬 Submit",
+            id="send-chatbot-message",
+            color="success",
+            style={"width": "100%", "font-size": "16px", "margin-bottom": "20px"}
+        ),
+        html.Div(
+            id="chatbot-response",
+            style={
+                'margin-top': '20px',
+                'max-height': '300px',
+                'overflow-y': 'auto',
+                'border': '1px solid #ddd',
+                'padding': '15px',
+                'border-radius': '5px',
+                'background-color': '#f9f9f9',
+                'font-size': '14px',
+                'white-space': 'pre-wrap',
+                "whiteSpace": "pre-wrap"
+            }
+        ),
+    ],
+    style={
+        'margin-top': '50px',
+        'padding': '20px',
+        'background-color': '#f0f8ff',
+        'border-radius': '10px',
+        'box-shadow': '0 2px 5px rgba(0, 0, 0, 0.2)',
+    }
 )
 
 # Main Layout
@@ -124,27 +131,29 @@ layout = dbc.Container(
                     style={
                         'color': '#144a51',
                         'font-weight': 'bold',
-                        'padding-top': '50px',
-                        'text-align': 'center',
-                        'font-size': '30px'
+                        'padding-top': '80px',
+                        'text-align': 'left',
+                        # 'font-size': '30px'
                     }
                 ),
-                html.Hr(),
+                
                 html.H6(
                     [
                         "🧠 Explore how the AI Doctor utilizes advanced algorithms to predict and analyze the likelihood of heart-related conditions based on your unique health profile."
                     ],
                     style={
                         'text-align': 'left',
-                        'margin-top': '10px',
+                        'margin-top': '-10px',
                         'font-size': 20,
                         'color': '#333131'
                     },
                     className='mb-4'
-                )
+                ),
+                html.Hr(style={'border-color': '#367d85'}),
             ]
         ),
-        chatbot_widget
+        # chatbot_widget
+        chatbot_interface
     ]
 )
 
@@ -187,7 +196,10 @@ def explain_prediction(df, column_info, prediction):
     Column Information:
     {column_info}
 
-    Act like a doctor and your explanation should be based on the data provided and how it affects the heart attack prediction and give your patient kindly some advices based on the data.
+    Act like a doctor and this is your patient and your explanation should:
+    - Provide each explanation point as a separate bullet point.
+    - Be clear, concise, and patient-friendly.
+    - Include actionable advice based on the data.
     """
 
     # Prepare the data for the request
@@ -199,9 +211,17 @@ def explain_prediction(df, column_info, prediction):
     # Send the request to the Groq API
     try:
         response = requests.post(api_url, headers=headers, json=payload)
-        response.raise_for_status()  # Raise an error for HTTP codes 4xx or 5xx
+        response.raise_for_status()  
         explanation = response.json().get("choices", [{}])[0].get("message", {}).get("content", "")
-        return explanation.strip()
+        # print(explanation)
+        # Format the explanation to ensure each point is on a new line
+        # Post-process the explanation to ensure structured formatting
+        # formatted_explanation = explanation.replace("•", "\n-").replace(". ", ".\n")
+        
+        # Ensure double line breaks before actionable advice sections
+        # formatted_explanation = formatted_explanation.replace("Based on", "\n\nBased on")
+        # print(formatted_explanation)
+        return explanation
     except requests.exceptions.RequestException as e:
         print(f"Error calling Groq API: {e}")
         return "There was an error generating the explanation. Please try again later."
@@ -265,10 +285,11 @@ def chatbot_interaction(send_clicks, user_input, current_responses):
                 )
 
             explanation = explain_prediction(df, column_info, prediction)
+            formatted_explanation = explanation.replace("\n", "  \n")
             with open('user_responses.json', 'w') as file:
                 json.dump(user_responses, file)
 
-            return explanation + "\n" + result_message, "", current_responses
+            return formatted_explanation + "\n" + result_message, "", current_responses
 
         current_key = question_keys[question_index]
 
