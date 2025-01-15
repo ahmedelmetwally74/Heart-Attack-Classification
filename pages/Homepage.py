@@ -72,7 +72,7 @@ layout = dbc.Container([
                     dbc.AccordionItem(
                         [
                             html.P(
-                                "Blood pressure plays a significant role in heart disease. High blood pressure can damage the heart and blood vessels, making it easier for plaque to build up and restricting blood flow, which can lead to a heart attack."
+                                "Blood pressure plays a significant role in heart disease. High blood pressure, or hypertension, can damage the heart and blood vessels over time. This damage makes it easier for plaque to build up in the arteries, a condition known as atherosclerosis. As plaque accumulates, it narrows the blood vessels, restricting blood flow to the heart. If the blood flow is severely restricted or blocked, it can lead to a heart attack. Managing blood pressure is crucial for reducing the risk of heart disease."
                                 , style={'text-align': 'justify', 'color':'#272727'}),
                         ],
                          title = html.Div([
@@ -91,7 +91,7 @@ layout = dbc.Container([
                     dbc.AccordionItem(
                         [
                             html.P(
-                                "Cholesterol levels are another important risk factor. High levels of LDL ('bad' cholesterol) contribute to plaque buildup in arteries, while low levels of HDL ('good' cholesterol) make it harder to remove these plaques, increasing heart attack risk."
+                                "Cholesterol levels are another important risk factor for heart disease. High levels of LDL (low-density lipoprotein), often referred to as 'bad' cholesterol, contribute to the buildup of plaque in the arteries. This plaque narrows and hardens the arteries, restricting blood flow. On the other hand, low levels of HDL (high-density lipoprotein), or 'good' cholesterol, make it harder for the body to remove this plaque. The combination of high LDL and low HDL increases the risk of heart attacks and other cardiovascular problems. Managing cholesterol levels is essential for heart health"
                                 , style={'text-align': 'justify', 'color':'#272727'}),
                         ],
                         title = html.Div([
@@ -111,7 +111,7 @@ layout = dbc.Container([
                     dbc.AccordionItem(
                         [
                             html.P(
-                                "Exercise is crucial for heart health. Regular physical activity strengthens the heart, lowers blood pressure, and improves circulation, reducing the risk of heart attacks."
+                                "Exercise is crucial for maintaining heart health. Regular physical activity strengthens the heart muscle, allowing it to pump blood more efficiently. It also helps lower blood pressure by improving the flexibility of blood vessels. Additionally, exercise improves circulation, ensuring that oxygen and nutrients are effectively delivered throughout the body. These benefits significantly reduce the risk of heart attacks and other cardiovascular conditions. Incorporating regular exercise into daily life is an important step toward protecting and improving heart health."
                                 , style={'text-align': 'justify', 'color':'#272727'}),
                         ],
                         title = html.Div([
@@ -273,15 +273,28 @@ def update_figure(selected_year, selected_entity, n):
      Output('popover', 'children')],
     [Input('interval-component', 'n_intervals')]
 )
+# def update_display_value(n):
+#     # Determine the index of the value to display based on the number of intervals passed
+#     live_text = ['319.9', '280M', '70 M', '40M', '24M', '15M']
+#     heart_factors = ['High Blood Pressure', 'High LDL Cholesterol', 'eating disorder', 'Smoking', 'Diabetes', 'Diabetes']
+#     index = n % len(live_text)
+
+#     # Create the contents of the card
+#     button_contents = [html.H1(children=[html.I(className="bi bi-people-fill m-2"), live_text[index]],
+#                               style={'color':'#144a51','font-weight':'bold'})]
+#     popover = dbc.PopoverBody("Estimated affected people by {} in millions".format(heart_factors[index]),style={'color': '#272727'})
+
+#     return button_contents, popover
 def update_display_value(n):
     # Determine the index of the value to display based on the number of intervals passed
-    live_text = ['319.9', '280M', '70 M', '40M', '24M', '15M']
-    heart_factors = ['High Blood Pressure', 'High LDL Cholesterol', 'eating disorder', 'Smoking', 'Diabetes', 'Diabetes']
+    live_text = ['1.13B', '28%', '650M', '1B', '400M']
+    heart_factors = ['High Blood Pressure', 'High LDL Cholesterol', 'Obesity', 'Smoking', 'Diabetes']
     index = n % len(live_text)
 
     # Create the contents of the card
     button_contents = [html.H1(children=[html.I(className="bi bi-people-fill m-2"), live_text[index]],
                               style={'color':'#144a51','font-weight':'bold'})]
-    popover = dbc.PopoverBody("Estimated affected people by {} in millions".format(heart_factors[index]),style={'color': '#272727'})
+    popover = dbc.PopoverBody("Estimated affected people by {} in millions, which can lead to heart attacks in {} people.".format(heart_factors[index], live_text[index]), 
+                              style={'color': '#272727'})
 
     return button_contents, popover

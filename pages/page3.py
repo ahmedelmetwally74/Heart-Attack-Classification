@@ -29,7 +29,7 @@ layout = dbc.Container(children=[
     dbc.Row([
         html.Div([
             html.H2(
-                "The Correlation between Cholesterol and Age Based on Heart Attack Risk",
+                "Heart Attack Risk based on Cholesterol and Age",
                 className='mb-4',
                 style={
                     'color': '#144a51',
