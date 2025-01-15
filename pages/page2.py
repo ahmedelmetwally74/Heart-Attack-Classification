@@ -196,7 +196,7 @@ def explain_prediction(df, column_info, prediction):
     Column Information:
     {column_info}
 
-    Act like a doctor and this is your patient and your explanation should:
+    Act like a doctor talking kindly to your patient and this is your patient and your explanation should:
     - Provide each explanation point as a separate bullet point.
     - Be clear, concise, and patient-friendly.
     - Include actionable advice based on the data.

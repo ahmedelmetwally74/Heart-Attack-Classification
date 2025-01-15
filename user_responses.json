@@ -1,1 +1,1 @@
-{"age": "50", "sex": "1", "cp": "2", "trestbps": "150", "chol": "150", "fbs": "1", "restecg": "1", "thalach": "120", "exang": "1", "oldpeak": 3.2, "slope": "1", "ca": "2", "thal": "1"}
+{"age": "50", "sex": "1", "cp": "1", "trestbps": "150", "chol": "150", "fbs": "0", "restecg": "1", "thalach": "120", "exang": "1", "oldpeak": 3.0, "slope": "1", "ca": "2", "thal": "1"}
