@@ -61,7 +61,7 @@ This dataset is crucial for understanding and analyzing heart attack risks, and 
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/heart-attack-classification.git
+    git clone https://github.com/ahmedelmetwally74/heart-attack-classification.git
     ```
 
 2. Open the Jupyter Notebook:
