@@ -10,7 +10,7 @@ from dash_iconify import DashIconify
 from app import server
 
 # Connect to your app pages
-from pages import Homepage, page2 , page3 #, page4
+from pages import Homepage, page2 , page3
 
 heart_attack_icon = html.Img(src=app.get_asset_url('heart-attack.png'),
                       style={'height': '34px', 'margin-right': 10,'margin-bottom':8})
@@ -48,8 +48,6 @@ def display_page(pathname):
         return page2.layout
     if pathname == '/pages/page3':
         return page3.layout
-    # if pathname == '/pages/page4':
-    #     return page4.layout
     else:
         return Homepage.layout
 
